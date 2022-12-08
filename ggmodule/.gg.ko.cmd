@@ -1,1 +1,0 @@
-cmd_/home/pipa/Documents/Code/C/Firework/ggmodule/gg.ko := ld -r -m elf_x86_64 -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T scripts/module.lds -o /home/pipa/Documents/Code/C/Firework/ggmodule/gg.ko /home/pipa/Documents/Code/C/Firework/ggmodule/gg.o /home/pipa/Documents/Code/C/Firework/ggmodule/gg.mod.o;  true

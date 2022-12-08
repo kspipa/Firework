@@ -1,12 +1,8 @@
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
-#include <time.h>
 #include <netinet/if_ether.h>
 #include <netinet/ip.h>
-#include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <libmnl/libmnl.h>
 #include <linux/netfilter.h>
@@ -19,13 +15,13 @@
 
 static struct mnl_socket *nl;
 
-static void nfq_send_verdict(int queue_num, uint32_t id)
+static void nfq_send_verdict(int queue_num, uint32_t id, int status)
 {
 	char buf[MNL_SOCKET_BUFFER_SIZE];
 	struct nlmsghdr *nlh;
 	struct nlattr *nest;
 	nlh = nfq_nlmsg_put(buf, NFQNL_MSG_VERDICT, queue_num);
-	nfq_nlmsg_verdict_put(nlh, id, NF_ACCEPT);
+	nfq_nlmsg_verdict_put(nlh, id, status);
 	nest = mnl_attr_nest_start(nlh, NFQA_CT);
 	mnl_attr_put_u32(nlh, CTA_MARK, htonl(42));
 	mnl_attr_nest_end(nlh, nest);
@@ -45,16 +41,17 @@ static int queue_cb(const struct nlmsghdr *nlh, void *data)
 	char* k = parse_ip(ll);
 	printf("---------------------------------\n");
 	printf("Source addr : %s\n", k);
-	nfq_send_verdict(ntohs(nfg->res_id), id);
+	int res = check_rules(read_rules("rules.firerules"));
+	nfq_send_verdict(ntohs(nfg->res_id), id, res);
 	return MNL_CB_OK;
 }
-static int start(char * argv[]){
+static int start(){
 	char *buf;
 	size_t sizeof_buf = 0xffff + (MNL_SOCKET_BUFFER_SIZE/2);
 	struct nlmsghdr *nlh;
 	int ret;
 	unsigned int portid, queue_num;
-	queue_num = atoi(argv[1]);
+	queue_num = atoi("wlp0s20f0u9u3");
 	nl = mnl_socket_open(NETLINK_NETFILTER);
 	mnl_socket_bind(nl, 0, MNL_SOCKET_AUTOPID);
 	portid = mnl_socket_get_portid(nl);
@@ -74,13 +71,12 @@ static int start(char * argv[]){
 		ret = mnl_socket_recvfrom(nl, buf, sizeof_buf);
 		ret = mnl_cb_run(buf, ret, 0, portid, queue_cb, NULL);
 	}
-
 	mnl_socket_close(nl);
 	return 0;
 }
 
 int main(int argc, char *argv[])
 {
-	start(argv);
+	start();
 	return 0;
 }

@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-extern char* parse_ip(struct iphdr *ip){
+#include <libnetfilter_queue/libnetfilter_queue.h>
+extern char* _parse_ip(struct iphdr *ip){
 	in_addr_t negr = (in_addr_t)ip->saddr;
 	struct in_addr k;
 	k.s_addr = negr;
    return (char *)inet_ntoa(k);
 }
-extern char *read_rules(char filename[]){
+extern char *_read_rules(char filename[]){
    FILE *textfile;
    char *text;
    long numbytes;
@@ -22,9 +23,6 @@ extern char *read_rules(char filename[]){
    fclose(textfile);
    return text;
 }
-extern int get_TYPE_from_rules(char *rules){
-      strstr()
-}
-extern int check_rules(char rules){
+extern char *_get_type_from_rules(char rules[]){
    
 }

@@ -8,16 +8,13 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <netinet/if_ether.h>
-#include "tools.h"
+#include "bridge.h"
 
 
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data)
 {
     u_int32_t id;
 	struct nfqnl_msg_packet_hw *hw = nfq_get_packet_hw(nfa);
-	struct iphdr *ll;
-	ll = (struct iphdr*) ( hw + ETH_HLEN );
-	char* k = parse_ip(ll);
     struct nfqnl_msg_packet_hdr *ph;
 	ph = nfq_get_msg_packet_hdr(nfa);	
 	id = ntohl(ph->packet_id);
@@ -35,36 +32,13 @@ int main(int argc, char **argv)
 
 	printf("opening library handle\n");
 	h = nfq_open();
-	if (!h) {
-		fprintf(stderr, "error during nfq_open()\n");
-		exit(1);
-	}
-
-	printf("unbinding existing nf_queue handler for AF_INET (if any)\n");
-	if (nfq_unbind_pf(h, AF_INET) < 0) {
-		fprintf(stderr, "error during nfq_unbind_pf()\n");
-		exit(1);
-	}
-
+	nfq_unbind_pf(h, AF_INET);
 	printf("binding nfnetlink_queue as nf_queue handler for AF_INET\n");
-	if (nfq_bind_pf(h, AF_INET) < 0) {
-		fprintf(stderr, "error during nfq_bind_pf()\n");
-		exit(1);
-	}
-
+	nfq_bind_pf(h, AF_INET);
 	printf("binding this socket to queue '0'\n");
 	qh = nfq_create_queue(h,  0, &cb, NULL);
-	if (!qh) {
-		fprintf(stderr, "error during nfq_create_queue()\n");
-		exit(1);
-	}
-
 	printf("setting copy_packet mode\n");
-	if (nfq_set_mode(qh, NFQNL_COPY_PACKET, 0xffff) < 0) {
-		fprintf(stderr, "can't set packet_copy mode\n");
-		exit(1);
-	}
-
+	nfq_set_mode(qh, NFQNL_COPY_PACKET, 0xffff);
 	fd = nfq_fd(h);
 
 	while ((rv = recv(fd, buf, sizeof(buf), 0)))
@@ -77,8 +51,6 @@ int main(int argc, char **argv)
 	nfq_destroy_queue(qh);
 
 #ifdef INSANE
-	/* normally, applications SHOULD NOT issue this command, since
-	 * it detaches other programs/sockets from AF_INET, too ! */
 	printf("unbinding from AF_INET\n");
 	nfq_unbind_pf(h, AF_INET);
 #endif

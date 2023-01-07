@@ -6,7 +6,7 @@
 #include <net/netlink.h>
 #include <net/net_namespace.h>
 
-MODULE_AUTHOR("pipa"); 
+MODULE_AUTHOR("kspipa"); 
 MODULE_DESCRIPTION("Firework module");
 MODULE_LICENSE("GPL");
 

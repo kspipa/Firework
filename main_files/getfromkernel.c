@@ -1,15 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <netinet/in.h>
 #include <linux/types.h>
-#include <linux/netfilter.h>		
-#include <libnetfilter_queue/libnetfilter_queue.h>
-#include <netinet/ip.h>
-#include <arpa/inet.h>
-#include <netinet/if_ether.h>
-#include <sys/socket.h>
-
+#include <linux/netfilter.h>
+#include <libnetfilter_queue/libnetfilter_queue.h>		
+#include "lib/tools.h"
 
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data)
 {
@@ -29,7 +23,7 @@ int main(int argc, char **argv)
 	int fd;
 	int rv;
 	char buf[4096] __attribute__ ((aligned));
-
+	sock = socket(AF_INET, SOCK_STREAM, 0)
 	printf("opening library handle\n");
 	h = nfq_open();
 	nfq_unbind_pf(h, AF_INET);

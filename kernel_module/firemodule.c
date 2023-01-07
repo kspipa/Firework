@@ -7,7 +7,7 @@
 #include <net/net_namespace.h>
 
 MODULE_AUTHOR("pipa"); 
-MODULE_DESCRIPTION("easy firewall");
+MODULE_DESCRIPTION("Firework module");
 MODULE_LICENSE("GPL");
 
 static struct nf_hook_ops *nfho = NULL;
@@ -25,14 +25,14 @@ static int __init hook_init(void)
     nfho->hooknum = NF_INET_LOCAL_IN;
     nfho->priority = NF_IP_PRI_MANGLE;
     nf_register_net_hook(&init_net, nfho);
-    printk("xmurp-ua start\n");
+    printk("Firework module start\n");
     return 0;
 }
 
 static void __exit hook_exit(void)
 {
     nf_unregister_net_hook(&init_net, nfho);
-    printk("xmurp-ua stop\n");
+    printk("Firework module stop\n");
 }
 
 module_init(hook_init);

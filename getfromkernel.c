@@ -8,7 +8,7 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <netinet/if_ether.h>
-#include "bridge.h"
+#include <sys/socket.h>
 
 
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data)

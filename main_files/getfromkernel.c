@@ -4,7 +4,7 @@
 #include <linux/netfilter.h>
 #include <libnetfilter_queue/libnetfilter_queue.h>		
 #include "lib/tools.h"
-
+int sock = 0;
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data)
 {
     u_int32_t id;
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 	int fd;
 	int rv;
 	char buf[4096] __attribute__ ((aligned));
-	sock = socket(AF_INET, SOCK_STREAM, 0)
+	sock = socket(AF_INET, SOCK_STREAM, 0);
 	printf("opening library handle\n");
 	h = nfq_open();
 	nfq_unbind_pf(h, AF_INET);

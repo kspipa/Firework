@@ -10,9 +10,5 @@ extern char* _parse_ip(struct iphdr *ip){		//Get ip from iphdr
 	k.s_addr = negr;
    	return (char *)inet_ntoa(k);
 }
-struct send{
-	char *data; 		//packet
-	int verdict;		//ACCEPT or DROP
-	int command;		//For api with distribution center
-};
+
 

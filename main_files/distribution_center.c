@@ -4,10 +4,11 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT    5005
+#include "../lib/api.h"
+
 static int sock = 0, neg = 0;
 static char buf[5000] = { 0 };
-int main(){
+static int start(){
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         printf("Cant create socket\n");
     else
@@ -28,6 +29,8 @@ int main(){
         neg = accept(sock,(struct sockaddr*)NULL, NULL);
         read(neg, buf, 5000);
         printf("%s\n", buf);
-        
     }
+}
+int main(){
+    start();
 }

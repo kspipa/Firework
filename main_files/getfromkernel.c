@@ -4,12 +4,22 @@
 #include <linux/netfilter.h>
 #include <libnetfilter_queue/libnetfilter_queue.h>		
 #include "lib/tools.h"
+#include "../lib/api.h"
+
 int sock = 0;
+static struct sockaddr_in serv_addr;
+
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data)
 {
     u_int32_t id;
 	struct nfqnl_msg_packet_hw *hw = nfq_get_packet_hw(nfa);
     struct nfqnl_msg_packet_hdr *ph;
+	if (send(sock, hw, sizeof(hw), 0) < 0){
+        printf("Cant send\n");return -1;
+    }
+    else{
+        printf("Can send!!\n");return 1;
+    }
 	ph = nfq_get_msg_packet_hdr(nfa);	
 	id = ntohl(ph->packet_id);
 	printf("entering callback\n");
@@ -24,6 +34,13 @@ int main(int argc, char **argv)
 	int rv;
 	char buf[4096] __attribute__ ((aligned));
 	sock = socket(AF_INET, SOCK_STREAM, 0);
+	serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+    inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+        printf("Cant connect to server\n");
+    else
+        printf("Connect!\n");
 	printf("opening library handle\n");
 	h = nfq_open();
 	nfq_unbind_pf(h, AF_INET);

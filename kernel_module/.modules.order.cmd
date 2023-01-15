@@ -1,0 +1,1 @@
+cmd_/home/pipa/Documents/Code/C/Firework/kernel_module/modules.order := {   echo /home/pipa/Documents/Code/C/Firework/kernel_module/firemodule.ko; :; } > /home/pipa/Documents/Code/C/Firework/kernel_module/modules.order

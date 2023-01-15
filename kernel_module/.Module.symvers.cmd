@@ -1,0 +1,1 @@
+cmd_/home/pipa/Documents/Code/C/Firework/kernel_module/Module.symvers :=  sed 's/ko$$/o/'  /home/pipa/Documents/Code/C/Firework/kernel_module/modules.order | scripts/mod/modpost  -a   -N -o /home/pipa/Documents/Code/C/Firework/kernel_module/Module.symvers -e -i Module.symvers -T - 

@@ -3,7 +3,7 @@
 #include <linux/types.h>
 #include <linux/netfilter.h>
 #include <libnetfilter_queue/libnetfilter_queue.h>		
-#include "lib/tools.h"
+#include "../lib/tools.h"
 #include "../lib/api.h"
 
 int sock = 0;

@@ -1,8 +1,9 @@
-#include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 
 #define PORT    5005
@@ -14,10 +15,22 @@ struct send_from_module{
 	int command;		//For api with distribution center
     char *name;         //Name of your module
 };
-extern int _get_ansver_code(int sock){
+struct module_struct{
+    int sock;
+    char *name;
+};
+extern int _get_answer_code(int sock){
     char buf[5000];
     while(read(sock, buf, 5000) == 0);
     return (int *)buf;
+}
+extern int _send_answer_code(int sock, int code){
+    if (send(sock, code, sizeof(code), 0) == -1){
+        return -1;
+    }
+    else{
+        return 1;
+    }
 }
 extern int send_packet(struct send_from_module *ps, int sock){
     if (send(sock, ps, sizeof(ps), 0) < 0){

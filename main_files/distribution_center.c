@@ -28,7 +28,6 @@ static int start(){
     while(1){
         neg = accept(sock,(struct sockaddr*)NULL, NULL);
         read(neg, buf, 5000);
-        
         printf("%s\n", buf);
     }
 }

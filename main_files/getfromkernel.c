@@ -8,17 +8,17 @@
 
 int sock = 0;
 static struct sockaddr_in serv_addr;
-
+static struct send_from_module *init_kernel_module;
 static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data)
 {
     u_int32_t id;
 	struct nfqnl_msg_packet_hw *hw = nfq_get_packet_hw(nfa);
     struct nfqnl_msg_packet_hdr *ph;
 	if (send(sock, hw, sizeof(hw), 0) < 0){
-        printf("Cant send\n");return -1;
+        printf("Cant send\n");
     }
     else{
-        printf("Can send!!\n");return 1;
+        printf("Can send!!\n");
     }
 	ph = nfq_get_msg_packet_hdr(nfa);	
 	id = ntohl(ph->packet_id);
@@ -41,6 +41,10 @@ int main(int argc, char **argv)
         printf("Cant connect to server\n");
     else
         printf("Connect!\n");
+	init_kernel_module->command = 1;
+	init_kernel_module->module_name.name = "kernel_module";
+	init_kernel_module->module_name.sock = sock;
+	init_module(init_kernel_module);
 	printf("opening library handle\n");
 	h = nfq_open();
 	nfq_unbind_pf(h, AF_INET);

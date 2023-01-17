@@ -7,18 +7,28 @@
 
 
 #define PORT    5005
+#define SUCCESS 200
+#define FAILURE 201
 
 static struct sockaddr_in serv_addr;
-struct send_from_module{
-	char *data; 		//Packet
-	int verdict;		//ACCEPT = 1 or DROP = 0 other = 3
-	int command;		//For api with distribution center
-    char *name;         //Name of your module
-};
 struct module_struct{
     int sock;
     char *name;
 };
+struct send_from_module{
+	char *data; 		//Packet
+	int verdict;		//ACCEPT = 1 or DROP = 0 other = 3
+	int command;		//For api with distribution center
+    struct module_struct module_name;         //Struct of your module
+};
+<<<<<<< HEAD
+struct module_struct{
+    int sock;
+    char *name;
+};
+=======
+
+>>>>>>> d62c82c (Work with api)
 extern int _get_answer_code(int sock){
     char buf[5000];
     while(read(sock, buf, 5000) == 0);
@@ -40,7 +50,7 @@ extern int send_packet(struct send_from_module *ps, int sock){
         printf("Can send!!\n");return 1;
     } 
 }
-extern int init_module(char* name, int sock){
+extern int init_module(struct module_struct *nn){
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         printf("Cant create socket\n");
     else
@@ -55,10 +65,17 @@ extern int init_module(char* name, int sock){
     struct send_from_module *init;
     init->command = 1;
     init->data = NULL;
-    init->name = name;
+    init->module_name = *nn;
     init->verdict = 3;
     send_packet(init, sock);
-    _get_ansver_code(sock);
+    if (_get_ansver_code(sock) == SUCCESS){
+        printf("Module has been initialized");
+        return 1;
+    }
+    else{
+        printf("Problem with init module");
+        return -1;
+    }
     
 }
 

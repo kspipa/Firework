@@ -2,7 +2,9 @@
 int main()
 {
     printf("first_module has been started\n");
-    char* name = "first module";
+    module_struct *nne;
     int sock;
-    init_module(name, sock);
+    nne->name = "first_module";
+    nne->sock = sock;
+    init_module(nne);
 }

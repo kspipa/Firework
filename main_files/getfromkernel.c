@@ -42,8 +42,8 @@ int main(int argc, char **argv)
     else
         printf("Connect!\n");
 	init_kernel_module->command = 1;
-	init_kernel_module->module_name.name = "kernel_module";
-	init_kernel_module->module_name.sock = sock;
+	init_kernel_module->module_name->name = "kernel_module";
+	init_kernel_module->module_name->sock = sock;
 	init_module(init_kernel_module);
 	printf("opening library handle\n");
 	h = nfq_open();

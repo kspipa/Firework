@@ -8,8 +8,8 @@
 #include "../lib/tools.h"
 
 static int sock = 0, neg = 0;
-static char buf[5000] = { 0 };
-static struct module_struct list[100];
+static char buffer[8192] = { 0 };
+static module_struct *list[100];
 static int _what_to_do(struct send_from_module *command){
     switch (command->command){
         case 1:
@@ -20,6 +20,7 @@ static int _what_to_do(struct send_from_module *command){
             else{
                 list[gen] = command->module_name;
             }
+            printf("Module has been init %c\n", command->module_name->name);
             return 1;
     }
 }
@@ -42,15 +43,17 @@ static int start(){
         printf("Socket listen\n");
     while(1){
         neg = accept(sock,(struct sockaddr*)NULL, NULL);
-        read(neg, buf, 5000);
-        struct send_from_module *get = (struct send_from_module *)buf;
+        read(neg, buffer, 8192);
+        printf("Get some packets\n");
+        struct send_from_module *get = (struct send_from_module *)buffer;
+        printf("buf : %s\n", get->module_name->name);
         if (_what_to_do(get) == 1){
-            _send_answer_code(get->module_name.sock, SUCCESS);
+            _send_answer_code(get->module_name->sock, SUCCESS);
         }
         else{
-            _send_answer_code(get->module_name.sock, FAILURE);
+            _send_answer_code(get->module_name->sock, FAILURE);
         }
-        printf("%s\n", buf);
+        printf("%s\n", buffer);
     }
 }
 int main(){

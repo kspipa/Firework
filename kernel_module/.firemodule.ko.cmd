@@ -1,1 +1,0 @@
-cmd_/home/pipa/Documents/cpp/Firework/kernel_module/firemodule.ko := ld -r -m elf_x86_64 -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T scripts/module.lds -o /home/pipa/Documents/cpp/Firework/kernel_module/firemodule.ko /home/pipa/Documents/cpp/Firework/kernel_module/firemodule.o /home/pipa/Documents/cpp/Firework/kernel_module/firemodule.mod.o;  true

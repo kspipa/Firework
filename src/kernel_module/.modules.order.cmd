@@ -1,0 +1,1 @@
+cmd_/home/pipa/Documents/Code/rust/Firework/kernel_module/modules.order := {   echo /home/pipa/Documents/Code/rust/Firework/kernel_module/firemodule.ko; :; } | awk '!x[$$0]++' - > /home/pipa/Documents/Code/rust/Firework/kernel_module/modules.order

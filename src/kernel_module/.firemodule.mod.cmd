@@ -1,0 +1,1 @@
+cmd_/home/pipa/Documents/Code/rust/Firework/kernel_module/firemodule.mod := printf '%s\n'   firemodule.o | awk '!x[$$0]++ { print("/home/pipa/Documents/Code/rust/Firework/kernel_module/"$$0) }' > /home/pipa/Documents/Code/rust/Firework/kernel_module/firemodule.mod

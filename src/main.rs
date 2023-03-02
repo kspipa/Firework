@@ -1,17 +1,15 @@
-use std::clone;
-
 use nfq::{Queue, Verdict};
 
 fn main() -> std::io::Result<()> {
     let mut queue = Queue::open()?;
     queue.bind(0)?;
     loop {
-        let mut new_msg = parse(queue.recv()?);
+        let new_msg = parse(queue.recv()?);
         queue.verdict(new_msg)?;
     }
     Ok(())
 }
-fn parse(mut msg: nfq::Message) -> nfq::Message{
+fn parse(msg: nfq::Message) -> nfq::Message{
     let mut new_msg = msg;
     let proto_num = new_msg.get_hw_protocol();
     if proto_num != 2048{

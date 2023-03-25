@@ -15,10 +15,6 @@ fn parse(msg: nfq::Message) -> nfq::Message{
     let payload = new_msg.get_payload_mut();
     println!("First source ip addr : {:?}", packethr::get_source_ip(payload));
     println!("First dest ip addr : {:?}", packethr::get_dest_ip(payload));
-    packethr::set_source_ip(payload, [1,1,1,1]);
-    packethr::set_dest_ip(payload, [1,1,1,1]);
-    println!("Second source ip addr : {:?}", packethr::get_source_ip(payload));
-    println!("Second dest ip addr : {:?}", packethr::get_dest_ip(payload));
     println!("Payload : {:?}", payload);
     let mut newpayload = payload.to_vec();
     new_msg.set_payload(newpayload);

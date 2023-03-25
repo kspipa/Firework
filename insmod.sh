@@ -1,0 +1,2 @@
+sudo insmod kernel_module_in/firemodule_in.ko
+sudo insmod kernel_module_out/firemodule_out.ko

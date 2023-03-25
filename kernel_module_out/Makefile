@@ -1,4 +1,4 @@
-obj-m+=firemodule.o
+obj-m+=firemodule_out.o
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
 clean:

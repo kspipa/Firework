@@ -13,6 +13,8 @@ fn main() -> std::io::Result<()> {
 fn parse(msg: nfq::Message) -> nfq::Message{
     let mut new_msg = msg;
     let payload = new_msg.get_payload();
+    println!("{}",new_msg.get_indev());
+    println!("{}", new_msg.get_outdev());
     println!("Payload: {:?}", payload);
     println!("Source ip addr : {:?}", packethr::get_source_ip(payload));
     println!("Dest ip addr : {:?}", packethr::get_dest_ip(payload));

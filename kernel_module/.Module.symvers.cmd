@@ -1,0 +1,1 @@
+cmd_/home/kspipa/Documents/Code/rust/Firework/kernel_module/Module.symvers :=  sed 's/ko$$/o/'  /home/kspipa/Documents/Code/rust/Firework/kernel_module/modules.order | scripts/mod/modpost -m     -o /home/kspipa/Documents/Code/rust/Firework/kernel_module/Module.symvers -e -i Module.symvers -T - 

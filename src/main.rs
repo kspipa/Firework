@@ -1,6 +1,12 @@
+mod ipc;
 use nfq::{Queue, Verdict};
 use fork::*;
-fn main() -> std::io::Result<()> {
+fn main(){
+    ipc::init()[0] = 1;
+}
+fn start_daemons<F>(func: F) -> std::io::Result<()>{
+    if let Ok(Fork::Child) = daemon(false, true) {
+    }
     let mut queue = Queue::open()?;
     queue.bind(0)?;
     loop{
@@ -10,8 +16,5 @@ fn main() -> std::io::Result<()> {
         queue.verdict(new_msg)?;
     }
     Ok(())
-}
-fn start_daemons(){
-    if let Ok(Fork::Child) = daemon(false, true) {
-    }
+
 }

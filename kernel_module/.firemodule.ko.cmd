@@ -1,1 +1,0 @@
-cmd_/home/kspipa/Documents/Code/rust/Firework/kernel_module/firemodule.ko := ld -r -m elf_x86_64 -z noexecstack --build-id=sha1  -T arch/x86/module.lds -o /home/kspipa/Documents/Code/rust/Firework/kernel_module/firemodule.ko /home/kspipa/Documents/Code/rust/Firework/kernel_module/firemodule.o /home/kspipa/Documents/Code/rust/Firework/kernel_module/firemodule.mod.o;  true

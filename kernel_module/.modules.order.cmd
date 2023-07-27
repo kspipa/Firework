@@ -1,1 +1,0 @@
-cmd_/home/kspipa/Documents/Code/rust/Firework/kernel_module/modules.order := {   echo /home/kspipa/Documents/Code/rust/Firework/kernel_module/firemodule.ko; :; } > /home/kspipa/Documents/Code/rust/Firework/kernel_module/modules.order

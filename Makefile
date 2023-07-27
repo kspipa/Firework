@@ -15,7 +15,7 @@ install:
 	sudo cp start.sh /usr/bin/frwk && sudo chmod o+x /usr/bin/frwk
 	export FRWK_PATH=$(path)
 clean:
-	rm -rf target/debug/Firework
+	rm -rf target
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD)/kernel_module clean
 debug:
 	cargo build

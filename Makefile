@@ -12,6 +12,8 @@ install:
 	cp target/debug/Firework $(path)
 	cp -r kernel_module $(path)
 	cp -r src/moduleManager $(path)
+	sudo chown firework:firework $(path) -R
+	sudo chmod a+x $(path) -R
 	sudo cp start.sh /usr/bin/frwk && sudo chmod o+x /usr/bin/frwk
 	export FRWK_PATH=$(path)
 clean:

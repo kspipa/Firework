@@ -1,20 +1,23 @@
-mod ipc;
+mod firework_lib;
+use firework_lib::*;
 use nfq::{Queue, Verdict};
 use fork::*;
-fn main(){
-    ipc::init()[0] = 1;
-}
-fn start_daemons<F>(func: F) -> std::io::Result<()>{
-    if let Ok(Fork::Child) = daemon(false, true) {
-    }
+fn main() -> std::io::Result<()>{
+    let mut k = shmemCell::init("strongnigga");
+    let seccell = shmemCell::init("strongnigga2");
+    let mut buffer = fifobuffer::new();
     let mut queue = Queue::open()?;
     queue.bind(0)?;
+    let mut new_msg: nfq::Message;
     loop{
-        let mut new_msg = queue.recv()?;
-        println!("{:?}", new_msg.get_payload());
-        new_msg.set_verdict(Verdict::Accept);
-        queue.verdict(new_msg)?;
+        if let Ok(Fork::Child) = daemon(false, true) {
+            loop{
+                buffer.write(&mut queue.recv().unwrap());
+            }
+        }
     }
     Ok(())
-
+}
+fn getpack(){
+ 
 }

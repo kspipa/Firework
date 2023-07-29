@@ -1,23 +1,26 @@
 from multiprocessing import shared_memory
+from copy import copy
 
 class shm():
-    def __init__(__self__, name: str):
-        shm_a = shared_memory.SharedMemory(name=name, create=True, size=10)
+    def __init__(__self__, name: str, size: int):
+        shm_a = shared_memory.SharedMemory(name=name, create=True, size=size)
         __self__.shm = shm_a
-        print(list(shm_a.buf))
+        __self__.previd = 0
     def get_ans_code(__self__):
-        while __self__.shm.buf[0] == 0:
+        while __self__.shm.buf[0] == __self__.previd:
             continue
-        return 1
-    def send_ans_code(__self__, verdict: int, id: int):
-        __self__.shm.buf[0] = 2
-        __self__.shm.buf[1] = id
-        __self__.shm.buf[2] = verdict
-    def parsemem(__self__):
-        packet = []
-        num = __self__.shm.buf[1]
-        for i in range(num):
-            packet[i] = __self__.shm.buf[i+2]
-        return (packet, __self__.shm.buf[num + 1])
+        ll = copy(__self__.shm.buf)
+        __self__.previd = ll[0]
+        return ll
+    def send_ans_code(__self__,id: int, verdict: int):
+        __self__.shm.buf[0] = id
+        __self__.shm.buf[1] = verdict
+
+def parsemem(memcell):
+    packet = []
+    p = memcell
+    for i in range(p[1]):
+        packet[i] = p[i+2]
+    return (p[0], packet)
     
     

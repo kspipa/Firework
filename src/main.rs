@@ -1,23 +1,23 @@
 mod firework_lib;
 use firework_lib::*;
 use nfq::{Queue, Verdict};
-use fork::*;
 fn main() -> std::io::Result<()>{
     let mut k = shmemCell::init("strongnigga");
-    let seccell = shmemCell::init("strongnigga2");
-    let mut buffer = fifobuffer::new();
+    let mut seccell = shmemCell::init("strongnigga2");
     let mut queue = Queue::open()?;
     queue.bind(0)?;
     let mut new_msg: nfq::Message;
     loop{
-        if let Ok(Fork::Child) = daemon(false, true) {
-            loop{
-                buffer.write(&mut queue.recv().unwrap());
-            }
+        new_msg = queue.recv()?;
+        k.setpack(new_msg.get_payload(), (new_msg.get_packet_id() as u8));
+        let res = seccell.waitcode();
+        if res.1 == 0{
+            new_msg.set_verdict(Verdict::Drop)
         }
+        else {
+            new_msg.set_verdict(Verdict::Accept)
+        }
+        queue.verdict(new_msg);
     }
     Ok(())
-}
-fn getpack(){
- 
 }

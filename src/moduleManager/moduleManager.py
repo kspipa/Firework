@@ -1,7 +1,6 @@
 from shm import shm, parsemem
-from threading import *
 
-cell = shm("strongnigga", 100)
+cell = shm("strongnigga", 2000)
 seccell = shm("strongnigga2", 2)
 
 def module(packid: int, packet):
@@ -9,5 +8,5 @@ def module(packid: int, packet):
 
 while True:
     (packid, packet) = parsemem(cell.get_ans_code())
-    seccell.send_ans_code(module(packid, packet))
-    print(list(cell.shm.buf))
+    ver = module(packid, packet)
+    seccell.send_ans_code(ver[0], ver[1])

@@ -1,28 +1,9 @@
-use nfq::Message;
 use shmem;
 
-
-
-pub struct fifobuffer<'a>{
-    buffer: Vec<&'a Message>
-}
-impl fifobuffer<'_>{
-    pub fn new() -> Self{
-        return fifobuffer {buffer : Vec::new()};
-    }
-    pub fn write(&mut self, data: &mut Message){
-        self.buffer.push(data);
-    }
-    pub fn read(&self) -> Vec<&Message>{
-        return self.buffer.clone();
-    }
-    pub fn getlen(&self) -> usize{
-        return self.buffer.len()
-    }
-}
 pub struct shmemCell{
     cell: shmem::Array<u8>,
-    name: String
+    name: String,
+    last_id: u8
 }
 impl shmemCell{
     pub fn init(name: &str) -> shmemCell{
@@ -30,7 +11,7 @@ impl shmemCell{
         return shmemCell::from(k, name.to_string());
     }
     fn from(arr: shmem::Array<u8>, name: String) -> Self{
-        return shmemCell {cell: arr, name: name};
+        return shmemCell {cell: arr, name: name, last_id: 0};
     }
     pub fn setpack(&mut self, packet: &[u8],id : u8){
         self.setinfo([&[id], packet].join(&(packet.len() as u8)).as_slice());
@@ -44,7 +25,17 @@ impl shmemCell{
         }
         return;
     }
-    pub fn readcode(&self) -> (u8, u8){
+    pub fn waitcode(&mut self) -> (u8, u8){
+        loop{
+            let val = self.readcode().clone();
+            if  val.0 == self.last_id{}
+            else {
+                self.last_id = val.0;
+                return val;
+            }
+        }
+    }
+    fn readcode(&self) -> (u8, u8){
         return (self.cell[0], self.cell[1]);
     }
 

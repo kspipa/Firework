@@ -1,1 +1,0 @@
-savedcmd_/home/kspipa/Documents/code/C/Firework/kernel_module/Module.symvers :=  scripts/mod/modpost  -a    -N -o /home/kspipa/Documents/code/C/Firework/kernel_module/Module.symvers -n -T /home/kspipa/Documents/code/C/Firework/kernel_module/modules.order -i Module.symvers -e 

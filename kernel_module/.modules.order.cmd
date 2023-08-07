@@ -1,1 +1,0 @@
-savedcmd_/home/kspipa/Documents/code/C/Firework/kernel_module/modules.order := {   echo /home/kspipa/Documents/code/C/Firework/kernel_module/firemodule.o; :; } > /home/kspipa/Documents/code/C/Firework/kernel_module/modules.order

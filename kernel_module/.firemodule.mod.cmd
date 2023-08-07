@@ -1,0 +1,1 @@
+savedcmd_/home/kspipa/Documents/code/C/Firework/kernel_module/firemodule.mod := printf '%s\n'   firemodule.o | awk '!x[$$0]++ { print("/home/kspipa/Documents/code/C/Firework/kernel_module/"$$0) }' > /home/kspipa/Documents/code/C/Firework/kernel_module/firemodule.mod

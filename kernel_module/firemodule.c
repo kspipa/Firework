@@ -21,7 +21,7 @@ static int __init hook_init(void)
 {
     nfho = (struct nf_hook_ops*)kcalloc(1, sizeof(struct nf_hook_ops), GFP_KERNEL);
     nfho->hook = (nf_hookfn*)hook_funcion;
-    nfho->pf = NFPROTO_IPV4;
+    nfho->pf = NFPROTO_INET;
     nfho->hooknum = NF_INET_LOCAL_IN;
     nfho->priority = NF_IP_PRI_MANGLE;
     nf_register_net_hook(&init_net, nfho);
